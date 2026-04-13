@@ -4,6 +4,19 @@ import PropTypes from 'prop-types'
 import Ratings from '../../rating/components/Ratings'
 
 const RecipeHeader = ({ photo, title, rating, addToMenu }) => {
+  const actionButtons = (
+    <div className="row options print-hidden">
+      <div className="col-xs-12">
+        <button className="btn btn-primary" onClick={addToMenu}>
+          <span className="glyphicon glyphicon-calendar" aria-hidden="true"/>
+        </button>
+        <button className="btn btn-primary" onClick={ window.print }>
+          <span className="glyphicon glyphicon-print" aria-hidden="true"/>
+        </button>
+      </div>
+    </div>
+  );
+
   if (photo) {
     return (
       <div className="panel-heading hero-image" style={{backgroundImage: "url(" + photo + ")"}}>
@@ -13,16 +26,7 @@ const RecipeHeader = ({ photo, title, rating, addToMenu }) => {
             <Ratings stars={ rating }/>
           </div>
         </div>
-        <div className="row options print-hidden">
-          <div className="col-xs-12">
-            <button className="btn btn-primary" onClick={addToMenu}>
-              <span className="glyphicon glyphicon-calendar" aria-hidden="true"/>
-            </button>
-            <button className="btn btn-primary" onClick={ window.print }>
-              <span className="glyphicon glyphicon-print" aria-hidden="true"/>
-            </button>
-          </div>
-        </div>
+        { actionButtons }
       </div>
     );
   }
@@ -35,14 +39,20 @@ const RecipeHeader = ({ photo, title, rating, addToMenu }) => {
           <Ratings stars={ rating }/>
         </div>
       </div>
+      { actionButtons }
     </div>
   );
 };
 
-RecipeHeader.PropTypes = {
-  photo: PropTypes.object.isRequired,
+RecipeHeader.propTypes = {
+  photo: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   rating: PropTypes.number.isRequired,
   title: PropTypes.string.isRequired,
+  addToMenu: PropTypes.func,
+};
+
+RecipeHeader.defaultProps = {
+  addToMenu: () => {},
 };
 
 export default RecipeHeader;
